@@ -7,7 +7,7 @@ paths:
   categories_folder: "./artifacts/sleeklady/categories"
   store_folder: "./artifacts/sleeklady/store"
   columns_created: "./artifacts/sleeklady/columns_created"
-  product_description: "./src/sleeklady/configurations"
+  product_description: "./artifacts/sleeklady/product_description"
   product_code: "./artifacts/sleeklady/product_code"
   capitalized_folder: "./artifacts/sleeklady/capitalized"
   final_excel_folder: "./artifacts/sleeklady/final_excel"

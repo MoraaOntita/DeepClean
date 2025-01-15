@@ -1,105 +1,75 @@
-import os
-import sys
 import pandas as pd
 import json
-from typing import Callable
-from sleeklady.configurations.config import CONFIG
-from sleeklady import logger
+import os
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s: %(levelname)s: %(message)s]')
+logger = logging.getLogger(__name__)
 
-def log_function_call(func: Callable) -> Callable:
-    """Decorator to log function calls and exits."""
-    def wrapper(*args, **kwargs):
-        logger.info(f"Entering {func.__name__}")
-        try:
-            result = func(*args, **kwargs)
-            logger.info(f"Exiting {func.__name__}")
-            return result
-        except Exception as e:
-            logger.error(f"Error in {func.__name__}: {str(e)}")
-            raise
-    return wrapper
+# Paths
+csv_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/columns_created/columns_added.csv'
+json_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/src/sleeklady/configurations/product_description.json'
+output_folder = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/product_description'
+output_file_path = os.path.join(output_folder, 'updated_product_descriptions.csv')
 
-
-@log_function_call
-def load_csv(file_path: str) -> pd.DataFrame:
+def load_csv(file_path):
     """Load the CSV file into a pandas DataFrame."""
     try:
-        return pd.read_csv(file_path)
+        logger.info("Entering load_csv")
+        data = pd.read_csv(file_path)
+        logger.info("Exiting load_csv")
+        return data
     except Exception as e:
-        logger.error(f"Failed to load CSV file: {file_path} - {str(e)}")
+        logger.error(f"Failed to load CSV file: {file_path} - {e}")
         raise
 
-
-@log_function_call
-def load_json(file_path: str) -> dict:
-    """Load a JSON file with product descriptions."""
+def load_json(file_path):
+    """Load the JSON file into a dictionary."""
     try:
+        logger.info("Entering load_json")
         with open(file_path, 'r') as file:
-            return json.load(file)
-    except Exception as e:
-        logger.error(f"Failed to load JSON file: {file_path} - {str(e)}")
+            data = json.load(file)
+        logger.info("Exiting load_json")
+        return data
+    except FileNotFoundError:
+        logger.error(f"JSON file not found: {file_path}")
         raise
-
-
-@log_function_call
-def replace_product_description(description: str, product_mapping: dict) -> str:
-    """Replace product descriptions using the provided mapping."""
-    return product_mapping.get(description, description)
-
-
-@log_function_call
-def create_directory(directory_path: str) -> None:
-    """Create the directory if it doesn't exist."""
-    try:
-        os.makedirs(directory_path, exist_ok=True)
-        logger.info(f"Directory created at: {directory_path}")
-    except Exception as e:
-        logger.error(f"Failed to create directory: {directory_path} - {str(e)}")
+    except json.JSONDecodeError as e:
+        logger.error(f"Error decoding JSON file: {file_path} - {e}")
         raise
-
-
-@log_function_call
-def save_to_csv(df: pd.DataFrame, output_file_path: str) -> None:
-    """Save the DataFrame to a CSV file."""
-    try:
-        df.to_csv(output_file_path, index=False)
-        logger.info(f"Data saved to: {output_file_path}")
     except Exception as e:
-        logger.error(f"Failed to save CSV: {output_file_path} - {str(e)}")
+        logger.error(f"An unexpected error occurred while loading JSON file: {file_path} - {e}")
         raise
-
 
 def main():
-    """Main function to load data, replace product descriptions, and save the updated file."""
     try:
-        # Define the paths from the configuration
-        input_file_path = os.path.join(CONFIG['paths']['columns_created'], 'columns_added.csv')
-        product_mapping_file = os.path.join(CONFIG['paths']['product_description'], 'product_description.json')  # Updated path
-        output_folder = CONFIG['paths']['product_description']
+        # Load the CSV file
+        data = load_csv(csv_file_path)
 
-        # Load the CSV and JSON files
-        data = load_csv(input_file_path)
-        product_mapping = load_json(product_mapping_file)
+        # Load the JSON file with product mappings
+        product_mapping = load_json(json_file_path)
 
-        # Replace the product descriptions
-        data['ProductDescriptions'] = data['ProductDescriptions'].apply(replace_product_description, args=(product_mapping,))
+        # Function to replace product descriptions using the mapping
+        def replace_product_description(description):
+            return product_mapping.get(description, description)
 
-        # Create the output directory
-        create_directory(output_folder)
+        # Replace the product descriptions in the DataFrame
+        if 'ProductDescriptions' in data.columns:
+            data['ProductDescriptions'] = data['ProductDescriptions'].apply(replace_product_description)
+        else:
+            logger.warning("The 'ProductDescriptions' column is missing in the CSV file.")
+            return
 
-        # Define the output file path
-        output_file_path = os.path.join(output_folder, 'updated_product_descriptions.csv')
+        # Automatically create the folder if it doesn't exist
+        os.makedirs(output_folder, exist_ok=True)
 
-        # Save the updated data to a new CSV file
-        save_to_csv(data, output_file_path)
-
-        print(f"Updated file saved to: {output_file_path}")
+        # Save the updated DataFrame to a new CSV file
+        data.to_csv(output_file_path, index=False)
+        logger.info(f"Updated file saved to: {output_file_path}")
 
     except Exception as e:
-        logger.error(f"An error occurred during the process: {str(e)}")
-        sys.exit(1)
-
+        logger.error(f"An error occurred during the process: {e}")
 
 if __name__ == "__main__":
     main()
