@@ -1,0 +1,13 @@
+paths:
+  data_folder: "./Data/carrefour"
+  formatted_folder: "./artifacts/carrefour/formated"
+  filtered_folder: "./artifacts/carrefour/filtered"
+  dropped_folder: "./artifacts/carrefour/dropped_columns"
+  brands_folder: "./artifacts/carrefour/brands"
+  categories_folder: "./artifacts/carrefour/categories"
+  store_folder: "./artifacts/carrefour/store"
+  columns_created: "./artifacts/carrefour/columns_created"
+  product_description: "./artifacts/carrefour/product_description"
+  product_code: "./artifacts/carrefour/product_code"
+  capitalized_folder: "./artifacts/carrefour/capitalized"
+  final_excel_folder: "./artifacts/carrefour/final_excel"
