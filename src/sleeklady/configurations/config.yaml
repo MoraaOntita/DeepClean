@@ -8,7 +8,7 @@ paths:
   store_folder: "./artifacts/sleeklady/store"
   columns_created: "./artifacts/sleeklady/columns_created"
   product_description: "./artifacts/sleeklady/product_description"
-  product_code: "./artifacts/sleeklady/product_code"
+  product_code: "./src/sleeklady/configurations"
   capitalized_folder: "./artifacts/sleeklady/capitalized"
   final_excel_folder: "./artifacts/sleeklady/final_excel"
 
@@ -21,10 +21,12 @@ files:
   modified_csv: "modified_file.csv"
   store_mapping_json: "./src/sleeklady/configurations/store_name.json"
   modified_with_resolved_store_names_csv: "modified_with_resolved_store_names.csv"
+  columns_added_csv: "columns_added.csv"
+  product_description_json: "product_description.json"
+  updated_product_descriptions_csv: "updated_product_descriptions.csv"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
-
 
 columns_to_drop:
   - "YYYYMMDD"
@@ -48,7 +50,6 @@ product_classification_patterns:
 patterns:
   store_name_pattern: "(SleekLady B\\d+)" # Ensure the backslash is escaped
 
-
 columns:
   rename:
     TotalSellingPrice: "Total Sales"
@@ -56,4 +57,3 @@ columns:
   group: "MT"
   sales_rep: "Leah"
   date: "DEC24"
-  # Add other column-related configurations here...

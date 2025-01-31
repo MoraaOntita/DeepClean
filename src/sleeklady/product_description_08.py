@@ -1,17 +1,24 @@
 import pandas as pd
 import json
 import os
-import logging
+import sys
+import logging  # Make sure logging is imported
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+sys.path.insert(0, root_dir)
+
+from sleeklady.configurations.config import CONFIG  # Import CONFIG from the correct location
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s: %(levelname)s: %(message)s]')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # Corrected this line to use the logging module
 
-# Paths
-csv_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/columns_created/columns_added.csv'
-json_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/src/sleeklady/configurations/product_description.json'
-output_folder = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/product_description'
-output_file_path = os.path.join(output_folder, 'updated_product_descriptions.csv')
+# Load paths from config.yaml
+csv_file_path = os.path.join(CONFIG['paths']['columns_created'], CONFIG['files']['columns_added_csv'])
+json_file_path = os.path.join(CONFIG['paths']['product_code'], CONFIG['files']['product_description_json'])
+output_folder = CONFIG['paths']['product_description']
+output_file_path = os.path.join(output_folder, CONFIG['files']['updated_product_descriptions_csv'])
 
 def load_csv(file_path):
     """Load the CSV file into a pandas DataFrame."""
