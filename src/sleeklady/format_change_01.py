@@ -2,7 +2,7 @@ import os
 import sys
 import pandas as pd
 import logging
-from typing import Dict, Optional
+from typing import Dict
 
 # Import the custom logger
 from sleeklady import logger
@@ -29,9 +29,9 @@ def log_function_call(func):
 
 
 @log_function_call
-def get_excel_file_path(root_dir: str, file_name: str) -> str:
-    """Resolve the path to the Excel file."""
-    return os.path.join(root_dir, CONFIG['paths']['data_folder'], file_name)
+def get_excel_file_path() -> str:
+    """Resolve the path to the Excel file dynamically."""
+    return os.path.join(CONFIG['paths']['data_folder'], CONFIG['files']['input_excel'])
 
 
 @log_function_call
@@ -78,8 +78,9 @@ def save_sheet_as_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> 
 def main():
     """Main function to execute the format change pipeline."""
     try:
-        excel_file_path = get_excel_file_path(root_dir, "Bestlady Alkhemy November 2024 data.xlsx")
-        formatted_folder_path = os.path.join(root_dir, CONFIG['paths']['formatted_folder'])
+        # Get file paths dynamically
+        excel_file_path = get_excel_file_path()
+        formatted_folder_path = CONFIG['paths']['formatted_folder']
 
         # Create necessary folders
         create_folder(formatted_folder_path)

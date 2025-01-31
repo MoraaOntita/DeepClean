@@ -41,7 +41,7 @@ def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
 def add_new_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Add new columns and fill them with the required values."""
     df['Account Name'] = 'SLEEK LADY'
-    df['Group'] = 'MTS'
+    df['Group'] = 'MT'
     df['Sales Rep'] = 'Leah'
     df['Date'] = 'DEC24'
     return df

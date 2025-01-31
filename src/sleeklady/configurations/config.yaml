@@ -1,6 +1,6 @@
 paths:
   data_folder: "./Data/sleeklady"
-  formatted_folder: "./artifacts/sleeklady/formated"
+  formatted_folder: "./artifacts/sleeklady/formatted"
   filtered_folder: "./artifacts/sleeklady/filtered"
   dropped_folder: "./artifacts/sleeklady/dropped_columns"
   brands_folder: "./artifacts/sleeklady/brands"
@@ -11,3 +11,6 @@ paths:
   product_code: "./artifacts/sleeklady/product_code"
   capitalized_folder: "./artifacts/sleeklady/capitalized"
   final_excel_folder: "./artifacts/sleeklady/final_excel"
+
+files:
+  input_excel: "Bestlady_Alkhemy_November_2024_data.xlsx"
