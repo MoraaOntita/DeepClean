@@ -3,8 +3,14 @@ import sys
 import pandas as pd
 import re
 from typing import Callable
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func: Callable) -> Callable:
@@ -42,16 +48,8 @@ def classify_product(product_name: str) -> str:
     """Classify products based on regex patterns."""
     product_name = product_name.lower()
 
-    patterns = {
-        'Hair Treatment': r'(treatment|treat|trt|moyonnaise)',
-        'Hair Shampoo': r'(clen&cond shamp|clen|shampoo|shamp|charc dtx sham)',
-        'Hair Conditioner': r'(conditioner|cond)',
-        'Hair Food': r'(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm)',
-        'Hair Gel': r'(gels|gel|curl activator)',
-        'Hair Spray': r'spray',
-        'Body Lotion': r'(lotion|b/ltn)',
-        'Body Scrub': r'(scrub|b/scrub)'
-    }
+    # Fetch patterns from the configuration
+    patterns = CONFIG['product_classification_patterns']
 
     # Check each category using regex
     for category, pattern in patterns.items():
@@ -86,8 +84,8 @@ def save_to_csv(df: pd.DataFrame, file_path: str) -> None:
 def main():
     """Main function to process the CSV and classify products."""
     try:
-        # Get the full path of the CSV file
-        file_path = get_file_path('alkhemy_brands_with_brands_column.csv')
+        # Get the full path of the CSV file from config
+        file_path = get_file_path(CONFIG['files']['brands_csv'])
 
         # Load the dataset
         df = load_csv(file_path)
@@ -103,8 +101,8 @@ def main():
         output_folder = CONFIG['paths']['categories_folder']
         create_directory(output_folder)
 
-        # Define the output file path for saving the modified dataset
-        output_file_path = os.path.join(output_folder, 'modified_file.csv')
+        # Define the output file path for saving the modified dataset from config
+        output_file_path = os.path.join(output_folder, CONFIG['files']['modified_csv'])
 
         # Save the updated dataset to the specified file path
         save_to_csv(df, output_file_path)

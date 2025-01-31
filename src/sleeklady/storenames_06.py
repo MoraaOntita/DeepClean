@@ -1,11 +1,15 @@
 import os
-import re
 import sys
 import pandas as pd
-import json
+import re
 from typing import Callable
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+import json
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func: Callable) -> Callable:
@@ -24,8 +28,8 @@ def log_function_call(func: Callable) -> Callable:
 
 @log_function_call
 def get_file_path(file_name: str) -> str:
-    """Resolve the file path for the categories CSV file from the configuration."""
-    return os.path.join(CONFIG['paths']['categories_folder'], file_name)
+    """Resolve the full path for the brands CSV file from the configuration."""
+    return os.path.join(CONFIG['paths']['brands_folder'], file_name)
 
 
 @log_function_call
@@ -42,7 +46,8 @@ def load_csv(file_path: str) -> pd.DataFrame:
 def load_store_mapping() -> dict:
     """Load store name mapping from the JSON file."""
     try:
-        with open('/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/src/sleeklady/configurations/store_name.json', 'r') as file:
+        store_mapping_path = CONFIG['files']['store_mapping_json']
+        with open(store_mapping_path, 'r') as file:
             store_mapping = json.load(file)
         return store_mapping
     except Exception as e:
@@ -53,11 +58,12 @@ def load_store_mapping() -> dict:
 @log_function_call
 def replace_store_name(store_name: str, store_mapping: dict) -> str:
     """Replace the entire cell content with the mapped store name based on the store ID."""
-    # Look for the store ID in the string
-    match = re.search(r'(SleekLady B\d+)', store_name, re.IGNORECASE)
+    store_name_pattern = CONFIG['patterns']['store_name_pattern']  # Get the pattern from config
+    
+    match = re.search(store_name_pattern, store_name, re.IGNORECASE)
 
     if match:
-        store_id = match.group(1)  # Extract the store ID
+        store_id = match.group(0)  # Extract the store ID
         # Fetch the full store name from the mapping
         full_store_name = store_mapping.get(store_id)
         if full_store_name:
@@ -89,14 +95,23 @@ def save_to_csv(df: pd.DataFrame, file_path: str) -> None:
         raise
 
 
+@log_function_call
+def combine_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """Combine duplicate rows by summing the 'Quantity' and 'TotalSellingPrice' columns."""
+    return df.groupby(['ProductDescriptions', 'StoreNames', 'Brands', 'Categories'], as_index=False).agg({
+        'Quantity': 'sum',
+        'TotalSellingPrice': 'sum'
+    })
+
+
 def main():
     """Main function to process the CSV and replace store names."""
     try:
         # Load the store mapping from the JSON file
         store_mapping = load_store_mapping()
 
-        # Get the full path of the CSV file
-        file_path = get_file_path('modified_file.csv')
+        # Get the full path of the CSV file from config
+        file_path = get_file_path(CONFIG['files']['brands_csv'])
 
         # Load the dataset
         df = load_csv(file_path)
@@ -104,15 +119,18 @@ def main():
         # Apply the function to the 'StoreNames' column using the store mapping
         df['StoreNames'] = df['StoreNames'].apply(lambda store_name: replace_store_name(store_name, store_mapping))
 
+        # Combine duplicate rows
+        df_combined = combine_duplicates(df)
+
         # Resolve the output folder path from the configuration
         output_folder = CONFIG['paths']['store_folder']
         create_directory(output_folder)
 
         # Define the output file path for saving the modified dataset
-        output_file_path = os.path.join(output_folder, 'modified_with_resolved_store_names.csv')
+        output_file_path = os.path.join(output_folder, CONFIG['files']['modified_with_resolved_store_names_csv'])
 
         # Save the updated dataset to the specified file path
-        save_to_csv(df, output_file_path)
+        save_to_csv(df_combined, output_file_path)
 
     except Exception as e:
         logger.error(f"An error occurred during the process: {str(e)}")

@@ -18,6 +18,9 @@ files:
   filtered_csv: "alkhemy_brands_data.csv"
   dropped_csv: "alkhemy_brands_dropped_columns.csv"
   brands_csv: "alkhemy_brands_with_brands_column.csv"
+  modified_csv: "modified_file.csv"
+  store_mapping_json: "./src/sleeklady/configurations/store_name.json"
+  modified_with_resolved_store_names_csv: "modified_with_resolved_store_names.csv"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
@@ -32,4 +35,15 @@ brand_conditions:
   - ["MIKALLA", "Mikalla"]
   - ["H&B", "H&B"]
 
+product_classification_patterns:
+  Hair Treatment: "(treatment|treat|trt|moyonnaise)"
+  Hair Shampoo: "(clen&cond shamp|clen|shampoo|shamp|charc dtx sham)"
+  Hair Conditioner: "(conditioner|cond)"
+  Hair Food: "(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm)"
+  Hair Gel: "(gels|gel|curl activator)"
+  Hair Spray: "spray"
+  Body Lotion: "(lotion|b/ltn)"
+  Body Scrub: "(scrub|b/scrub)"
 
+patterns:
+  store_name_pattern: "(SleekLady B\\d+)" # Ensure the backslash is escaped
