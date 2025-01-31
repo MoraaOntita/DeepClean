@@ -7,8 +7,8 @@ paths:
   categories_folder: "./artifacts/sleeklady/categories"
   store_folder: "./artifacts/sleeklady/store"
   columns_created: "./artifacts/sleeklady/columns_created"
-  product_description: "./artifacts/sleeklady/product_description"
-  product_code: "./src/sleeklady/configurations"
+  product_description_folder: "./artifacts/sleeklady/product_description"
+  product_code_folder: "./artifacts/sleeklady/product_codes"  # ✅ Corrected name
   capitalized_folder: "./artifacts/sleeklady/capitalized"
   final_excel_folder: "./artifacts/sleeklady/final_excel"
 
@@ -22,8 +22,11 @@ files:
   store_mapping_json: "./src/sleeklady/configurations/store_name.json"
   modified_with_resolved_store_names_csv: "modified_with_resolved_store_names.csv"
   columns_added_csv: "columns_added.csv"
-  product_description_json: "product_description.json"
+  product_description_json: "./src/sleeklady/configurations/product_description.json"
   updated_product_descriptions_csv: "updated_product_descriptions.csv"
+  product_codes_json: "./src/sleeklady/configurations/product_codes.json"
+  updated_product_codes_csv: "updated_product_codes.csv"
+
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
