@@ -1,41 +1,61 @@
+import os
 import pandas as pd
 
-# Define the file paths
-input_file_path = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/cleanshelf/formatted_data.csv"
-output_file_path = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/cleanshelf/formatted_to_long_transformed_data.csv"
+# Define file paths
+root_dir = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI"
+input_file = os.path.join(root_dir, "artifacts/cleanshelf/formatted/formatted_data.csv")
+output_dir = os.path.join(root_dir, "artifacts/cleanshelf/filtered")
+output_file = os.path.join(output_dir, "reshaped_data.csv")
 
-# Read the CSV file
-df = pd.read_csv(input_file_path)
+# Ensure the output directory exists
+os.makedirs(output_dir, exist_ok=True)
 
-# Define the columns that represent the store names
+# Step 1: Load the data
+try:
+    # Skip extra rows and load data
+    data = pd.read_csv(input_file, header=[0, 1])  # Adjust header rows if needed
+except Exception as e:
+    print(f"Error loading file: {e}")
+    exit()
+
+# Step 2: Reshape the data
+# Define the store columns (Sold Qty and Value pairs)
 store_columns = [
-    "FRESH MARKET", "GREEN PARK", "KAHAWA WEST", "KERUGOYA", "KIAMBU", "KIKUYU",
-    "K-MALL", "LANGATA", "LIMURU", "NAKURU", "NYAHURURU", "RONGAI", "RUAKA", "WENDANI"
+    ("COVO-LAVINGTON", "Sold Qty"), ("COVO-LAVINGTON", "Value"),
+    ("FRESHMARKET", "Sold Qty"), ("FRESHMARKET", "Value"),
+    ("GREEN PARK", "Sold Qty"), ("GREEN PARK", "Value"),
+    ("KAHAWA WEST", "Sold Qty"), ("KAHAWA WEST", "Value"),
+    ("KERUGOYA", "Sold Qty"), ("KERUGOYA", "Value"),
+    ("KIAMBU", "Sold Qty"), ("KIAMBU", "Value"),
+    ("KIKUYU", "Sold Qty"), ("KIKUYU", "Value"),
+    ("K-MALL", "Sold Qty"), ("K-MALL", "Value"),
+    ("LANGATA", "Sold Qty"), ("LANGATA", "Value"),
+    ("LIMURU", "Sold Qty"), ("LIMURU", "Value"),
+    ("NAKURU", "Sold Qty"), ("NAKURU", "Value"),
+    ("NGONG", "Sold Qty"), ("NGONG", "Value"),
+    ("NYAHURURU", "Sold Qty"), ("NYAHURURU", "Value"),
+    ("RONGAI", "Sold Qty"), ("RONGAI", "Value"),
+    ("RUAKA", "Sold Qty"), ("RUAKA", "Value"),
+    ("SOUTH B", "Sold Qty"), ("SOUTH B", "Value"),
+    ("WENDANI", "Sold Qty"), ("WENDANI", "Value")
 ]
 
-# Melt the dataframe from wide to long format
-long_df = pd.melt(
-    df,
-    id_vars=["Product Code", "Product Description", "Total Quantity", "Discount", "Total Discount"],
+# Melt the DataFrame to unpivot the store columns
+reshaped_data = data.melt(
+    id_vars=["Supp Name"],  # Keep supplier name
     value_vars=store_columns,
-    var_name="Store Name",
-    value_name="Quantity"
+    var_name=["StoreNames", "Metric"],
+    value_name="Value"
 )
 
-# Replace NaN values in the Quantity column with 0
-long_df["Quantity"] = long_df["Quantity"].fillna(0)
+# Step 3: Clean up the reshaped data
+reshaped_data = reshaped_data.pivot_table(
+    index=["Supp Name", "StoreNames"],
+    columns="Metric",
+    values="Value",
+    aggfunc="first"
+).reset_index()
 
-# Convert Quantity to integer type (optional, if appropriate)
-long_df["Quantity"] = long_df["Quantity"].astype(int)
-
-# Drop rows where Quantity is 0
-filtered_long_df = long_df[long_df["Quantity"] > 0].copy()
-
-# Optional: Reset the index after filtering
-filtered_long_df.reset_index(drop=True, inplace=True)
-
-# Save the transformed and filtered data to a new CSV file with a descriptive name
-filtered_output_path = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/cleanshelf/created_stores.csv"
-filtered_long_df.to_csv(filtered_output_path, index=False)
-
-print(f"Transformed and filtered data saved to: {filtered_output_path}")
+# Step 4: Save the reshaped data
+reshaped_data.to_csv(output_file, index=False)
+print(f"Reshaped data saved to {output_file}")
