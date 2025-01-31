@@ -1,9 +1,15 @@
 import os
 import sys
 import pandas as pd
-from sleeklady.configurations.config import CONFIG
 from typing import Callable
-from sleeklady import logger
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func: Callable) -> Callable:
@@ -33,17 +39,18 @@ def load_csv(file_path: str) -> pd.DataFrame:
 @log_function_call
 def rename_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Rename columns as needed."""
-    df.rename(columns={'TotalSellingPrice': 'Total Sales'}, inplace=True)
+    column_mappings = CONFIG['columns']['rename']
+    df.rename(columns=column_mappings, inplace=True)
     return df
 
 
 @log_function_call
 def add_new_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Add new columns and fill them with the required values."""
-    df['Account Name'] = 'SLEEK LADY'
-    df['Group'] = 'MT'
-    df['Sales Rep'] = 'Leah'
-    df['Date'] = 'DEC24'
+    df['Account Name'] = CONFIG['columns']['account_name']
+    df['Group'] = CONFIG['columns']['group']
+    df['Sales Rep'] = CONFIG['columns']['sales_rep']
+    df['Date'] = CONFIG['columns']['date']
     return df
 
 
@@ -72,8 +79,8 @@ def save_to_csv(df: pd.DataFrame, output_file_path: str) -> None:
 def main():
     """Main function to process the CSV and add new columns."""
     try:
-        # Define the file paths from the configuration
-        input_file_path = os.path.join(CONFIG['paths']['store_folder'], 'modified_with_resolved_store_names.csv')
+        # Fetch the file paths and settings from the configuration
+        input_file_path = os.path.join(CONFIG['paths']['store_folder'], CONFIG['files']['modified_with_resolved_store_names_csv'])
         output_folder = CONFIG['paths']['columns_created']
         
         # Create the output directory if it doesn't exist

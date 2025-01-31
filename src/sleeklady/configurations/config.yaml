@@ -47,3 +47,13 @@ product_classification_patterns:
 
 patterns:
   store_name_pattern: "(SleekLady B\\d+)" # Ensure the backslash is escaped
+
+
+columns:
+  rename:
+    TotalSellingPrice: "Total Sales"
+  account_name: "SLEEK LADY"
+  group: "MT"
+  sales_rep: "Leah"
+  date: "DEC24"
+  # Add other column-related configurations here...
