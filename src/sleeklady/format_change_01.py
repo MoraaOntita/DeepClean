@@ -4,14 +4,13 @@ import pandas as pd
 import logging
 from typing import Dict
 
-# Import the custom logger
-from sleeklady import logger
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
 
-# Add the project root directory to sys.path
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-sys.path.append(root_dir)
 
-from sleeklady.configurations.config import CONFIG
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func):
@@ -78,7 +77,7 @@ def save_sheet_as_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> 
 def main():
     """Main function to execute the format change pipeline."""
     try:
-        # Get file paths dynamically
+        # Get file paths dynamically from configuration
         excel_file_path = get_excel_file_path()
         formatted_folder_path = CONFIG['paths']['formatted_folder']
 
