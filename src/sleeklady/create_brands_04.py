@@ -2,8 +2,12 @@ import os
 import sys
 import pandas as pd
 from typing import Any
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func):
@@ -40,10 +44,9 @@ def load_csv(file_path: str) -> pd.DataFrame:
 def create_brands_column(df: pd.DataFrame) -> pd.DataFrame:
     """Create a new 'Brands' column based on the 'ProductDescriptions'."""
     try:
+        brand_conditions = CONFIG['brand_conditions']
         df['Brands'] = df['ProductDescriptions'].apply(
-            lambda x: 'Mikalla' if str(x).startswith('MIKALLA')
-                      else 'H&B' if str(x).startswith('H&B')
-                      else 'Unknown'
+            lambda x: next((brand for start, brand in brand_conditions if str(x).startswith(start)), 'Unknown')
         )
         return df
     except Exception as e:
@@ -76,8 +79,8 @@ def save_to_csv(df: pd.DataFrame, file_path: str) -> None:
 def main():
     """Main function to process the CSV and create the Brands column."""
     try:
-        # Get the full path of the CSV file
-        file_path = get_file_path('alkhemy_brands_dropped_columns.csv')
+        # Get the full path of the CSV file from config
+        file_path = get_file_path(CONFIG['files']['dropped_csv'])
 
         # Load the dataset
         df = load_csv(file_path)
@@ -89,8 +92,8 @@ def main():
         output_folder = CONFIG['paths']['brands_folder']
         create_directory(output_folder)
 
-        # Define the output file path for saving the updated dataset
-        output_file_path = os.path.join(output_folder, 'alkhemy_brands_with_brands_column.csv')
+        # Define the output file path for saving the updated dataset from config
+        output_file_path = os.path.join(output_folder, CONFIG['files']['brands_csv'])
 
         # Save the updated dataset to the specified file path
         save_to_csv(df, output_file_path)

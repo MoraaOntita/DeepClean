@@ -17,6 +17,7 @@ files:
   input_csv: "Sheet1.csv"
   filtered_csv: "alkhemy_brands_data.csv"
   dropped_csv: "alkhemy_brands_dropped_columns.csv"
+  brands_csv: "alkhemy_brands_with_brands_column.csv"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
@@ -26,5 +27,9 @@ columns_to_drop:
   - "YYYYMMDD"
   - "ProductCodes"
   - "SupplierNames"
+
+brand_conditions:
+  - ["MIKALLA", "Mikalla"]
+  - ["H&B", "H&B"]
 
 
