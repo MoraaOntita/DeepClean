@@ -16,6 +16,15 @@ files:
   input_excel: "ALKHEMY BRANDS DEC 2024.xlsx"
   input_csv: "Sheet1.csv"
   filtered_csv: "alkhemy_brands_data.csv"
+  dropped_csv: "alkhemy_brands_dropped_columns.csv"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
+
+
+columns_to_drop:
+  - "YYYYMMDD"
+  - "ProductCodes"
+  - "SupplierNames"
+
+

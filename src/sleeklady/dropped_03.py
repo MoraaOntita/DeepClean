@@ -2,8 +2,12 @@ import os
 import sys
 import pandas as pd
 from typing import List
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func):
@@ -71,22 +75,22 @@ def save_dropped_columns_data(data: pd.DataFrame, file_path: str) -> None:
 def main():
     """Main function to execute the drop columns process."""
     try:
-        # Get the file path for the filtered CSV file
-        csv_file_path = get_csv_file_path('alkhemy_brands_data.csv')
+        # Get the file path for the filtered CSV file from config
+        csv_file_path = get_csv_file_path(CONFIG['files']['filtered_csv'])
 
         # Read the CSV file into a DataFrame
         data = read_csv_file(csv_file_path)
 
-        # Drop the specified columns
-        columns_to_drop = ['YYYYMMDD', 'ProductCodes', 'SupplierNames']
+        # Get the columns to drop from config
+        columns_to_drop = CONFIG['columns_to_drop']
         data_dropped = drop_columns(data, columns_to_drop)
 
-        # Get the folder path for saving the dropped columns data
+        # Get the folder path for saving the dropped columns data from config
         dropped_columns_folder_path = CONFIG['paths']['dropped_folder']
         create_folder(dropped_columns_folder_path)
 
         # Define the file path for the CSV file with dropped columns
-        dropped_columns_csv_file_path = os.path.join(dropped_columns_folder_path, 'alkhemy_brands_dropped_columns.csv')
+        dropped_columns_csv_file_path = os.path.join(dropped_columns_folder_path, CONFIG['files']['dropped_csv'])
 
         # Save the data with dropped columns to a new CSV file
         save_dropped_columns_data(data_dropped, dropped_columns_csv_file_path)
