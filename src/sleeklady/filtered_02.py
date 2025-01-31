@@ -2,8 +2,14 @@ import os
 import sys
 import pandas as pd
 from typing import Optional
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func):
@@ -23,7 +29,7 @@ def log_function_call(func):
 @log_function_call
 def get_csv_file_path() -> str:
     """Get the full path of the CSV file."""
-    return os.path.join(CONFIG['paths']['formatted_folder'], 'Sheet1.csv')
+    return os.path.join(CONFIG['paths']['formatted_folder'], CONFIG['files']['input_csv'])
 
 
 @log_function_call
@@ -73,18 +79,19 @@ def main():
         # Read the CSV file
         data = read_csv_file(csv_file_path)
 
-        # Filter the data for ALKHEMY BRANDS
-        alkhemy_data = filter_data(data, 'ALKHEMY BRANDS')
+        # Filter the data for the configured supplier
+        supplier_name = CONFIG['filters']['supplier_name']
+        filtered_data = filter_data(data, supplier_name)
 
         # Get the folder path for saving filtered data
         filtered_folder_path = CONFIG['paths']['filtered_folder']
         create_folder(filtered_folder_path)
 
         # Define the file path for the filtered CSV file
-        filtered_csv_file_path = os.path.join(filtered_folder_path, 'alkhemy_brands_data.csv')
+        filtered_csv_file_path = os.path.join(filtered_folder_path, CONFIG['files']['filtered_csv'])
 
         # Save the filtered data to a CSV file
-        save_filtered_data(alkhemy_data, filtered_csv_file_path)
+        save_filtered_data(filtered_data, filtered_csv_file_path)
 
     except Exception as e:
         logger.error(f"An error occurred during the filtering process: {str(e)}")
