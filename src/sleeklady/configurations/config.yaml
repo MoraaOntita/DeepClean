@@ -13,4 +13,9 @@ paths:
   final_excel_folder: "./artifacts/sleeklady/final_excel"
 
 files:
-  input_excel: "Bestlady_Alkhemy_November_2024_data.xlsx"
+  input_excel: "ALKHEMY BRANDS DEC 2024.xlsx"
+  input_csv: "Sheet1.csv"
+  filtered_csv: "alkhemy_brands_data.csv"
+
+filters:
+  supplier_name: "ALKHEMY BRANDS"
