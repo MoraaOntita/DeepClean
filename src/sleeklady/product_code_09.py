@@ -35,7 +35,13 @@ def load_json(file_path: str) -> dict:
 
 def get_product_code(description: str, product_codes: dict) -> str:
     """Return the product code from the description."""
-    return {v: k for k, v in product_codes.items()}.get(description, None)
+    description = description.strip()  # Remove whitespace
+    # Reverse the key-value pair lookup
+    for code, prod_desc in product_codes.items():
+        if description == prod_desc:
+            return code
+    return None
+
 
 def create_directory(directory_path: str) -> None:
     """Create the directory if it doesn't exist."""
@@ -61,10 +67,13 @@ def process_product_codes():
         logger.info("Starting product codes processing")
 
         # Load paths from config.yaml
-        input_file_path = os.path.join(CONFIG['paths']['product_description'], CONFIG['files']['updated_product_descriptions_csv'])
-        product_codes_file = os.path.join(CONFIG['paths']['product_code'], CONFIG['files']['product_codes_json'])  # Fixed key name
-        output_folder = CONFIG['paths']['product_code']
-        output_file_path = os.path.join(output_folder, CONFIG['files']['updated_product_codes_csv'])  # Fixed key name
+        input_file_path = os.path.join(CONFIG['paths']['product_description_folder'], CONFIG['files']['updated_product_descriptions_csv'])
+        
+        # Update the product_codes_file path to be absolute
+        product_codes_file = os.path.join(root_dir, CONFIG['files']['product_codes_json'])
+        
+        output_folder = CONFIG['paths']['product_code_folder']
+        output_file_path = os.path.join(output_folder, CONFIG['files']['updated_product_codes_csv'])
 
         logger.info(f"Product codes file path: {product_codes_file}")
 
@@ -76,9 +85,12 @@ def process_product_codes():
         # Load product codes mapping
         product_codes = load_json(product_codes_file)
 
+        # Strip whitespace and check case sensitivity
+        data['ProductDescriptions'] = data['ProductDescriptions'].astype(str).str.strip()
+
         # Process data
         if 'ProductDescriptions' in data.columns:
-            data['product_code'] = data['ProductDescriptions'].apply(get_product_code, args=(product_codes,))
+            data['ProductCode'] = data['ProductDescriptions'].apply(lambda x: get_product_code(x, product_codes))
             logger.info("Product codes successfully mapped")
         else:
             logger.warning("The 'ProductDescriptions' column is missing in the CSV file.")

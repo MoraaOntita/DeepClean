@@ -8,7 +8,7 @@ paths:
   store_folder: "./artifacts/sleeklady/store"
   columns_created: "./artifacts/sleeklady/columns_created"
   product_description_folder: "./artifacts/sleeklady/product_description"
-  product_code_folder: "./artifacts/sleeklady/product_codes"  # ✅ Corrected name
+  product_code_folder: "./artifacts/sleeklady/product_codes"
   capitalized_folder: "./artifacts/sleeklady/capitalized"
   final_excel_folder: "./artifacts/sleeklady/final_excel"
 
@@ -26,7 +26,6 @@ files:
   updated_product_descriptions_csv: "updated_product_descriptions.csv"
   product_codes_json: "./src/sleeklady/configurations/product_codes.json"
   updated_product_codes_csv: "updated_product_codes.csv"
-
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
@@ -51,7 +50,7 @@ product_classification_patterns:
   Body Scrub: "(scrub|b/scrub)"
 
 patterns:
-  store_name_pattern: "(SleekLady B\\d+)" # Ensure the backslash is escaped
+  store_name_pattern: "(SleekLady B\\d+)"
 
 columns:
   rename:
