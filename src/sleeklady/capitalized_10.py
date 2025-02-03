@@ -2,8 +2,16 @@ import os
 import sys
 import pandas as pd
 from typing import Callable
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
+
+# Access paths from the CONFIG variable
+input_file_path = os.path.join(CONFIG['paths']['product_code_folder'], CONFIG['files']['input_product_codes_csv'])
 
 def log_function_call(func: Callable) -> Callable:
     """Decorator to log function calls and exits."""
@@ -17,11 +25,6 @@ def log_function_call(func: Callable) -> Callable:
             logger.error(f"Error in {func.__name__}: {str(e)}")
             raise
     return wrapper
-
-@log_function_call
-def get_input_file_path() -> str:
-    """Return the file path for the input data to be capitalized."""
-    return '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/product_code/updated_product_codes.csv'
 
 @log_function_call
 def load_csv(file_path: str) -> pd.DataFrame:
@@ -67,9 +70,6 @@ def save_to_csv(df: pd.DataFrame, file_path: str) -> None:
 def main():
     """Main function to process the data and capitalize string columns."""
     try:
-        # Get the input file path for the data to be capitalized
-        input_file_path = get_input_file_path()
-
         # Load the dataset
         df = load_csv(input_file_path)
 
@@ -77,11 +77,11 @@ def main():
         df = capitalize_data(df)
 
         # Resolve the directory path to save the modified file
-        capitalized_folder = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/sleeklady/capitalized'
+        capitalized_folder = CONFIG['paths']['capitalized_folder']
         create_directory(capitalized_folder)
 
         # Define the output file path for the capitalized data in the 'capitalized' folder
-        output_file_path = os.path.join(capitalized_folder, 'capitalized_data.csv')
+        output_file_path = os.path.join(capitalized_folder, CONFIG['files']['output_capitalized_csv'])
 
         # Save the modified DataFrame to the specified file path
         save_to_csv(df, output_file_path)

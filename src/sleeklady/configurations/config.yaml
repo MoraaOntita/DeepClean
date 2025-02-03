@@ -26,6 +26,8 @@ files:
   updated_product_descriptions_csv: "updated_product_descriptions.csv"
   product_codes_json: "./src/sleeklady/configurations/product_codes.json"
   updated_product_codes_csv: "updated_product_codes.csv"
+  input_product_codes_csv: "C:/Users/user/Desktop/AI/ML Projects/DeepClean/artifacts/sleeklady/product_codes/updated_product_codes.csv"
+  output_capitalized_csv: "capitalized_data.csv"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
