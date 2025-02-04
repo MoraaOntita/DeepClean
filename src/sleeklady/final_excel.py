@@ -2,8 +2,14 @@ import os
 import sys
 import pandas as pd
 from typing import Callable
-from sleeklady import logger
-from sleeklady.configurations.config import CONFIG
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+
+from src.sleeklady import logger
+from src.sleeklady.configurations.config import CONFIG
 
 
 def log_function_call(func: Callable) -> Callable:
@@ -23,7 +29,7 @@ def log_function_call(func: Callable) -> Callable:
 @log_function_call
 def get_input_csv_path() -> str:
     """Resolve the input CSV file path from the configuration."""
-    return os.path.join(CONFIG['paths']['store_folder'], 'capitalized_data.csv')
+    return os.path.join(CONFIG['paths']['capitalized_folder'], CONFIG['files']['input_capitalized_csv'])
 
 
 @log_function_call
@@ -72,7 +78,7 @@ def main():
         create_directory(output_dir)
 
         # Define the output Excel file path
-        output_excel_path = os.path.join(output_dir, 'transformed_file.xlsx')
+        output_excel_path = os.path.join(output_dir, CONFIG['files']['output_excel_filename'])
 
         # Save the DataFrame to the output Excel file
         save_to_excel(df, output_excel_path)

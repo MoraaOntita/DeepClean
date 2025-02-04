@@ -26,8 +26,10 @@ files:
   updated_product_descriptions_csv: "updated_product_descriptions.csv"
   product_codes_json: "./src/sleeklady/configurations/product_codes.json"
   updated_product_codes_csv: "updated_product_codes.csv"
-  input_product_codes_csv: "C:/Users/user/Desktop/AI/ML Projects/DeepClean/artifacts/sleeklady/product_codes/updated_product_codes.csv"
-  output_capitalized_csv: "capitalized_data.csv"
+  input_product_codes_csv: "./artifacts/sleeklady/product_codes/updated_product_codes.csv"
+
+  input_capitalized_csv: "capitalized_data.csv" 
+  output_excel_filename: "final_output.xlsx"
 
 filters:
   supplier_name: "ALKHEMY BRANDS"
