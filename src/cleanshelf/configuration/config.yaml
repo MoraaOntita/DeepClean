@@ -1,0 +1,3 @@
+file_paths:
+  input_file: "../Data/cleanshelf/Cosmetics december 2024 sales data.xlsx"
+  output_file: "../artifacts/cleanshelf/header/cleaned_data.xlsx"
