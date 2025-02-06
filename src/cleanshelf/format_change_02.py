@@ -27,11 +27,11 @@ print(df.head())
 
 # Manually rename the columns to the correct names
 df.rename(columns={
-    'Unnamed: 0_level_0_Product Code': 'Product Code',
-    'Unnamed: 1_level_0_Product Desc': 'Product Desc',
-    'Unnamed: 2_level_0_Dept Name': 'Dept Name',
-    'Unnamed: 3_level_0_Class Name': 'Class Name',
-    'Unnamed: 4_level_0_Supp Name': 'Supp Name'
+    'Unnamed: 0_level_0_Product Code': 'Product_Code',
+    'Unnamed: 1_level_0_Product Desc': 'Product_Desc',
+    'Unnamed: 2_level_0_Dept Name': 'Dept_Name',
+    'Unnamed: 3_level_0_Class Name': 'Class_Name',
+    'Unnamed: 4_level_0_Supp Name': 'Supp_Name'
 }, inplace=True)
 
 # Inspect the renamed column names
