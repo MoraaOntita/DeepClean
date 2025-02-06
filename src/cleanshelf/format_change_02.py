@@ -34,6 +34,8 @@ df.rename(columns={
     'Unnamed: 4_level_0_Supp Name': 'Supp_Name'
 }, inplace=True)
 
+df.columns = df.columns.str.strip()  # Remove leading/trailing spaces
+
 # Inspect the renamed column names
 print("After renaming column names:")
 print(df.head())
