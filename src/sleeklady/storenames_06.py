@@ -29,7 +29,7 @@ def log_function_call(func: Callable) -> Callable:
 @log_function_call
 def get_file_path(file_name: str) -> str:
     """Resolve the full path for the brands CSV file from the configuration."""
-    return os.path.join(CONFIG['paths']['brands_folder'], file_name)
+    return os.path.join(CONFIG['paths']['categories_folder'], file_name)
 
 
 @log_function_call
@@ -111,7 +111,7 @@ def main():
         store_mapping = load_store_mapping()
 
         # Get the full path of the CSV file from config
-        file_path = get_file_path(CONFIG['files']['brands_csv'])
+        file_path = get_file_path(CONFIG['files']['modified_csv'])
 
         # Load the dataset
         df = load_csv(file_path)

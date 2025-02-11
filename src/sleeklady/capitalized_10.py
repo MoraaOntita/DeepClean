@@ -11,7 +11,8 @@ from src.sleeklady import logger
 from src.sleeklady.configurations.config import CONFIG
 
 # Access paths from the CONFIG variable
-input_file_path = os.path.join(CONFIG['paths']['product_code_folder'], CONFIG['files']['input_product_codes_csv'])
+input_file_path = os.path.join(os.path.abspath(CONFIG['paths']['product_code_folder']), CONFIG['files']['input_product_codes_csv'])
+
 
 def log_function_call(func: Callable) -> Callable:
     """Decorator to log function calls and exits."""
