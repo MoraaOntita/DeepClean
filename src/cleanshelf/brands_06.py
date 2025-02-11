@@ -10,9 +10,16 @@ output_file = os.path.join(output_folder, "cleaned_data_transformed_brands.csv")
 df = pd.read_csv(input_file)
 
 # Function to categorize brands based on Product_Desc
+# Function to categorize brands based on Product_Desc
 def classify_brand(desc):
     desc = str(desc).lower()  # Convert to lowercase for case-insensitive matching
-    if "mikalla" in desc:
+    
+    # If "Scrub" is in the description, classify it as "H&B" first
+    if "scrub" in desc:
+        return "H&B"
+    
+    # Otherwise, check for Mikalla or Honey & Butter
+    elif "mikalla" in desc:
         return "Mikalla"
     elif any(keyword in desc for keyword in ["honey", "butter", "honey&butter"]):
         return "H&B"
