@@ -2,21 +2,14 @@ import os
 import sys
 import pandas as pd
 import logging
-from typing import Dict, Optional
-
-
-# Add the project root directory to sys.path
-#root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-#sys.path.append(root_dir)
+from typing import Dict
 
 # Add the src folder to sys.path to ensure it can find sleeklady
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, root_dir)
 
- 
 from src.carrefour import logger
 from src.carrefour.configurations.config import CONFIG
-
 
 
 def log_function_call(func):
@@ -60,7 +53,7 @@ def check_file_exists(file_path: str) -> None:
 
 @log_function_call
 def read_excel_file(file_path: str) -> Dict[str, pd.DataFrame]:
-    """Read the Excel file and return all sheets."""
+    """Read the Excel file and return all sheets as DataFrames."""
     try:
         return pd.read_excel(file_path, sheet_name=None)
     except Exception as e:
@@ -69,26 +62,38 @@ def read_excel_file(file_path: str) -> Dict[str, pd.DataFrame]:
 
 
 @log_function_call
-def save_and_reload_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> pd.DataFrame:
-    """Remove first five rows, save as CSV, and reload the CSV while keeping correct headers."""
+def convert_to_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> str:
+    """Convert an Excel sheet to CSV without modifying rows."""
     try:
-        if data.shape[0] > 5:
-            data = data.iloc[5:]  # Drop first 5 rows
-            data.reset_index(drop=True, inplace=True)  # Reset index
+        csv_file_path = os.path.join(folder_path, f"{sheet_name}_raw.csv")
+        data.to_csv(csv_file_path, index=False)  # Save raw CSV first
+        logger.info(f"Converted {sheet_name} to CSV: {csv_file_path}")
+        return csv_file_path
+    except Exception as e:
+        logger.error(f"Failed to convert {sheet_name} to CSV: {str(e)}")
+        raise
 
-        csv_file_path = os.path.join(folder_path, f"{sheet_name}.csv")
-        data.to_csv(csv_file_path, index=False)
 
-        # Reload CSV and explicitly set headers
-        reloaded_data = pd.read_csv(csv_file_path, header=0)
+@log_function_call
+def clean_csv(csv_file_path: str, sheet_name: str, folder_path: str) -> None:
+    """Remove the first six rows from the CSV file and save the cleaned version."""
+    try:
+        # Load the CSV without headers
+        df = pd.read_csv(csv_file_path, header=None)
+
+        # Ensure there are enough rows to remove
+        if df.shape[0] > 6:
+            df = df.iloc[6:].reset_index(drop=True)  # Drop first 6 rows
+            df.columns = df.iloc[0]  # Set the new header from row 7
+            df = df[1:].reset_index(drop=True)  # Drop the new header row from data
+
+        cleaned_csv_path = os.path.join(folder_path, f"{sheet_name}.csv")
+        df.to_csv(cleaned_csv_path, index=False)
         
-        logger.info(f"Saved {sheet_name} as CSV after removing first five rows: {csv_file_path}")
-        logger.info(f"Reloaded CSV: {csv_file_path}")
-
-        return reloaded_data
+        logger.info(f"Cleaned CSV saved: {cleaned_csv_path}")
 
     except Exception as e:
-        logger.error(f"Failed to process {sheet_name}: {str(e)}")
+        logger.error(f"Failed to clean CSV {csv_file_path}: {str(e)}")
         raise
 
 
@@ -107,12 +112,10 @@ def main():
         # Read the Excel file
         excel_data = read_excel_file(excel_file_path)
 
-        # Process each sheet: delete rows, save as CSV, and reload CSV
+        # Process each sheet: Convert to CSV, delete rows, and save cleaned version
         for sheet_name, data in excel_data.items():
-            reloaded_data = save_and_reload_csv(data, sheet_name, formatted_folder_path)
-
-            # You can now use `reloaded_data` for further processing if needed
-            print(f"Reloaded CSV for {sheet_name}:\n", reloaded_data.head())
+            csv_file_path = convert_to_csv(data, sheet_name, formatted_folder_path)
+            clean_csv(csv_file_path, sheet_name, formatted_folder_path)
 
     except Exception as e:
         logger.error(f"An error occurred during the format change process: {str(e)}")
