@@ -9,9 +9,12 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-# File paths
-input_file_path = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/product_code/updated_product_codes.csv"
-output_folder = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/capitalized"
+# Define the BASE_DIR relative to the script's location
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+# Define relative file paths
+input_file_path = os.path.join(BASE_DIR, "artifacts", "carrefour", "product_code", "updated_product_codes.csv")
+output_folder = os.path.join(BASE_DIR, "artifacts", "carrefour", "capitalized")
 output_file_path = os.path.join(output_folder, "capitalized_product_codes.csv")
 
 # Function to capitalize data
