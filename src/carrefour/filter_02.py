@@ -2,9 +2,14 @@ import os
 import sys
 import pandas as pd
 from typing import Optional
-from carrefour import logger
-from carrefour.configurations.config import CONFIG
 
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.carrefour import logger
+from src.carrefour.configurations.config import CONFIG
 
 def log_function_call(func):
     """Decorator to log function calls and exits."""
