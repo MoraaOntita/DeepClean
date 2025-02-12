@@ -10,10 +10,13 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-# Define file paths
-input_csv_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/columns_created/created_columns.csv'
-json_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/src/carrefour/configurations/product_description.json'
-output_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/product_description/product_description.csv'
+# Get the root directory relative to the script's location
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+# Define relative file paths
+input_csv_path = os.path.join(BASE_DIR, "artifacts", "carrefour", "columns_created", "created_columns.csv")
+json_file_path = os.path.join(BASE_DIR, "src", "carrefour", "configurations", "product_description.json")
+output_file_path = os.path.join(BASE_DIR, "artifacts", "carrefour", "product_description", "product_description.csv")
 
 # Load CSV file
 def load_csv(file_path):

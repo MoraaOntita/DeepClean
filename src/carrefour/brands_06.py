@@ -1,9 +1,12 @@
 import os
 import pandas as pd
 
-# Define file paths
-input_file = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/total_sales/totalsales.csv"
-output_dir = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/brands"
+# Get the root directory relative to the script's location
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+# Define relative file paths
+input_file = os.path.join(BASE_DIR, "artifacts", "carrefour", "total_sales", "totalsales.csv")
+output_dir = os.path.join(BASE_DIR, "artifacts", "carrefour", "brands")
 output_file = os.path.join(output_dir, "brands.csv")
 
 # Load the CSV file

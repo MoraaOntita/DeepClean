@@ -1,7 +1,14 @@
 import os
 import pandas as pd
 import json
-from carrefour.configurations.config import CONFIG
+import sys
+
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+from src.carrefour.configurations.config import CONFIG
+
 
 
 def load_json(file_path: str) -> dict:
@@ -41,26 +48,30 @@ def save_to_csv(df: pd.DataFrame, output_file_path: str) -> None:
 
 def process_product_codes():
     """Main function to process product codes."""
-    # Correct the path to the updated_product_descriptions.csv file
-    input_file_path = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/product_description/product_description.csv'
-    data = pd.read_csv(input_file_path)
+    # Get base directory
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-    # Load the JSON file with product codes
-    product_codes_file = '/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/src/carrefour/configurations/product_codes.json'
+    # Define relative paths
+    input_file_path = os.path.join(BASE_DIR, "artifacts", "carrefour", "product_description", "product_description.csv")
+    product_codes_file = os.path.join(BASE_DIR, "src", "carrefour", "configurations", "product_codes.json")
+
+    # Load data
+    data = pd.read_csv(input_file_path)
     product_codes = load_json(product_codes_file)
 
     # Create a new column 'product_code' using the 'ProductDescriptions' column
     data['product_code'] = data['ProductDescriptions'].apply(get_product_code, args=(product_codes,))
 
     # Automatically create the folder if it doesn't exist
-    output_folder = CONFIG['paths']['product_code']
+    output_folder = os.path.join(BASE_DIR, CONFIG['paths']['product_code'])
     create_directory(output_folder)
 
-    # Save the updated DataFrame to a new CSV file in the desired folder
+    # Save the updated DataFrame to a new CSV file
     output_file_path = os.path.join(output_folder, 'updated_product_codes.csv')
     save_to_csv(data, output_file_path)
 
     print(f"Updated file with product codes saved to: {output_file_path}")
+
 
 if __name__ == "__main__":
     process_product_codes()
