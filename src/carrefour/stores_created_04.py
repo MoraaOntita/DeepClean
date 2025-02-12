@@ -1,9 +1,12 @@
 import os
 import pandas as pd
 
-# Define file paths
-input_file = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/dropped_columns/alkhemy_brands_dropped_columns.csv"
-output_dir = "/home/moraa-ontita/Documents/Machine-learning/DeepCleanAI/artifacts/carrefour/store_name"
+# Get the root directory relative to the script's location
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+# Define relative file paths
+input_file = os.path.join(BASE_DIR, "artifacts", "carrefour", "dropped_columns", "alkhemy_brands_dropped_columns.csv")
+output_dir = os.path.join(BASE_DIR, "artifacts", "carrefour", "store_name")
 output_file = os.path.join(output_dir, "store_names_transformed.csv")
 
 # Load the CSV file
@@ -30,5 +33,3 @@ os.makedirs(output_dir, exist_ok=True)
 df_melted.to_csv(output_file, index=False)
 
 print(f"File saved successfully at: {output_file}")
-
-
