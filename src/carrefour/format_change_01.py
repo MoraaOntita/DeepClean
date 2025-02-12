@@ -4,14 +4,19 @@ import pandas as pd
 import logging
 from typing import Dict, Optional
 
-# Import the custom logger
-from carrefour import logger
 
 # Add the project root directory to sys.path
-root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-sys.path.append(root_dir)
+#root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+#sys.path.append(root_dir)
 
-from carrefour.configurations.config import CONFIG
+# Add the src folder to sys.path to ensure it can find sleeklady
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, root_dir)
+
+ 
+from src.carrefour import logger
+from src.carrefour.configurations.config import CONFIG
+
 
 
 def log_function_call(func):
@@ -64,21 +69,33 @@ def read_excel_file(file_path: str) -> Dict[str, pd.DataFrame]:
 
 
 @log_function_call
-def save_sheet_as_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> None:
-    """Save a DataFrame as a CSV file."""
+def save_and_reload_csv(data: pd.DataFrame, sheet_name: str, folder_path: str) -> pd.DataFrame:
+    """Remove first five rows, save as CSV, and reload the CSV while keeping correct headers."""
     try:
+        if data.shape[0] > 5:
+            data = data.iloc[5:]  # Drop first 5 rows
+            data.reset_index(drop=True, inplace=True)  # Reset index
+
         csv_file_path = os.path.join(folder_path, f"{sheet_name}.csv")
         data.to_csv(csv_file_path, index=False)
-        logger.info(f"Saved {sheet_name} as CSV: {csv_file_path}")
+
+        # Reload CSV and explicitly set headers
+        reloaded_data = pd.read_csv(csv_file_path, header=0)
+        
+        logger.info(f"Saved {sheet_name} as CSV after removing first five rows: {csv_file_path}")
+        logger.info(f"Reloaded CSV: {csv_file_path}")
+
+        return reloaded_data
+
     except Exception as e:
-        logger.error(f"Failed to save {sheet_name} as CSV: {str(e)}")
+        logger.error(f"Failed to process {sheet_name}: {str(e)}")
         raise
 
 
 def main():
     """Main function to execute the format change pipeline."""
     try:
-        excel_file_path = get_excel_file_path(root_dir, "Carrefour Data Dec2024.xlsx")
+        excel_file_path = get_excel_file_path(root_dir, "KE-23-0229-CGD-ALKH-Y24-M12-12.xlsx")
         formatted_folder_path = os.path.join(root_dir, CONFIG['paths']['formatted_folder'])
 
         # Create necessary folders
@@ -90,9 +107,12 @@ def main():
         # Read the Excel file
         excel_data = read_excel_file(excel_file_path)
 
-        # Convert each sheet to a separate CSV file
+        # Process each sheet: delete rows, save as CSV, and reload CSV
         for sheet_name, data in excel_data.items():
-            save_sheet_as_csv(data, sheet_name, formatted_folder_path)
+            reloaded_data = save_and_reload_csv(data, sheet_name, formatted_folder_path)
+
+            # You can now use `reloaded_data` for further processing if needed
+            print(f"Reloaded CSV for {sheet_name}:\n", reloaded_data.head())
 
     except Exception as e:
         logger.error(f"An error occurred during the format change process: {str(e)}")
