@@ -60,7 +60,8 @@ patterns:
 columns:
   rename:
     TotalSellingPrice: "Total Sales"
-  account_name: "SLEEK LADY"
+  account_name: "Sleeklady Cosmetics"
   group: "MT"
   sales_rep: "Leah"
   date: "DEC24"
+  account_code: "SLE003"

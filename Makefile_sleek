@@ -1,0 +1,24 @@
+PYTHON := python
+
+SCRIPTS := \
+    src/sleeklady/format_change_01.py \
+    src/sleeklady/filtered_02.py \
+    src/sleeklady/dropped_03.py \
+    src/sleeklady/create_brands_04.py \
+    src/sleeklady/categories_05.py \
+    src/sleeklady/storenames_06.py \
+    src/sleeklady/columns_created_07.py \
+    src/sleeklady/product_description_08.py \
+    src/sleeklady/product_code_09.py \
+    src/sleeklady/capitalized_10.py \
+    src/sleeklady/final_excel.py
+
+all: run_scripts
+
+run_scripts:
+	@for script in $(SCRIPTS); do \
+	    echo "Running $$script"; \
+	    $(PYTHON) "$$script" || exit 1; \
+	done
+
+.PHONY: all run_scripts

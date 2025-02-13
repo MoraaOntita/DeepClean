@@ -51,6 +51,7 @@ def add_new_columns(df: pd.DataFrame) -> pd.DataFrame:
     df['Group'] = CONFIG['columns']['group']
     df['Sales Rep'] = CONFIG['columns']['sales_rep']
     df['Date'] = CONFIG['columns']['date']
+    df['Account Code'] = CONFIG['columns']['account_code']
     return df
 
 
