@@ -14,10 +14,13 @@ os.makedirs(output_folder, exist_ok=True)
 df = pd.read_csv(input_file, dtype=str)  # Force all columns to be strings
 
 # Add new columns
-df["Account_Name"] = "cleanshelf"
+df["Account_Name"] = "Clean Shelf Supermarkets-Main Acc"
 df["Group"] = "mt"
 df["Sales_Rep"] = "leah"
 df["Date"] = "dec24"  # Keep it as a string without apostrophe
+df["Account_code"] = "CLE001"
+
+
 
 # Save as CSV without extra formatting issues
 df.to_csv(output_file, index=False, quoting=csv.QUOTE_NONNUMERIC)  # Ensures text stays as is

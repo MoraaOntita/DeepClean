@@ -13,10 +13,12 @@ output_file = os.path.join(output_dir, "created_columns.csv")
 df = pd.read_csv(input_file)
 
 # Add new columns with static values
-df["AccountName"] = "MAJ004"
+df["AccountName"] = "Majid AL Futtaim Hypermarkets Ltd"
 df["Group"] = "MT"
 df["SalesRep"] = "Leah"
 df["Date"] = "Dec24"
+df["AccountCode"] = "MAJ004"
+
 
 # Create output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)

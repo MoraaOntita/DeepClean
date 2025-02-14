@@ -1,0 +1,24 @@
+PYTHON := python
+
+SCRIPTS := \
+    src/carrefour/format_change_01.py \
+    src/carrefour/filter_02.py \
+    src/carrefour/dropped_columns_03.py \
+    src/carrefour/stores_created_04.py \
+    src/carrefour/total_sales_05.py \
+    src/carrefour/brands_06.py \
+    src/carrefour/categories_07.py \
+    src/carrefour/columns_created_08.py \
+    src/carrefour/product_description_09.py \
+    src/carrefour/product_codes_10.py \
+    src/carrefour/capitalized.py  # Fix the path and ensure no trailing \ here
+
+all: run_scripts
+
+run_scripts:
+	@for script in $(SCRIPTS); do \
+	    echo "Running $$script"; \
+	    $(PYTHON) "$$script" || exit 1; \
+	done
+
+.PHONY: all run_scripts
