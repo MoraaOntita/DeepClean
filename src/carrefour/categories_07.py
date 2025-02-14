@@ -13,12 +13,15 @@ output_file = os.path.join(output_dir, "categories.csv")
 # Load the CSV file
 df = pd.read_csv(input_file)
 
+# Replace '?' with 'e' in ProductDescriptions column
+df["ProductDescriptions"] = df["ProductDescriptions"].str.replace("?", "E", regex=False)
+
 # Define category mappings with regular expressions
 category_mapping = {
     'Hair Treatment': r'(treatment|treat|trt|moyonnaise)',
     'Hair Shampoo': r'(clen&cond shamp|clen|shampoo|shamp|charc dtx sham)',
     'Hair Conditioner': r'(conditioner|cond)',
-    'Hair Food': r'(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm|CRïº‘ME)',
+    'Hair Food': r'(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm|ANTI DANDRUFF CREME)',
     'Hair Gel': r'(gels|gel|curl activator)',
     'Hair Spray': r'spray',
     'Body Lotion': r'(lotion|b/ltn)',
