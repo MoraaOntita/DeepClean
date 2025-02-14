@@ -48,7 +48,7 @@ product_classification_patterns:
   Hair Treatment: "(treatment|treat|trt|moyonnaise)"
   Hair Shampoo: "(clen&cond shamp|clen|shampoo|shamp|charc dtx sham)"
   Hair Conditioner: "(conditioner|cond)"
-  Hair Food: "(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm)"
+  Hair Food: "(scalp soother|s/soother|h/food|anti dandruff creme|anti dandruff crm|crm|anti dandruff cream)"
   Hair Gel: "(gels|gel|curl activator)"
   Hair Spray: "spray"
   Body Lotion: "(lotion|b/ltn)"
