@@ -22,11 +22,11 @@ def drop_columns_and_save(input_file):
     os.makedirs(output_dir, exist_ok=True)
     
     # Save the modified file
-    output_path = os.path.join(output_dir, 'cleaned_data_final.csv')
+    output_path = os.path.join(output_dir, 'cleaned_column_final.csv')
     df.to_csv(output_path, index=False)
     
     logging.info(f"Columns dropped and data saved to {output_path}")
 
 # Example usage
-input_file = 'artifacts/naivas/edited_columns/cleaned_data_transformed.csv'
+input_file = 'artifacts/naivas/edited_rows/cleaned_data_transformed.csv'
 drop_columns_and_save(input_file)
