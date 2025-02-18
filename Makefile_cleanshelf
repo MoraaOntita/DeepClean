@@ -1,0 +1,25 @@
+PYTHON := python
+
+SCRIPTS := \
+    src/cleanshelf/header_removed_01.py \
+    src/cleanshelf/format_change_02.py \
+    src/cleanshelf/filtered_03.py \
+    src/cleanshelf/edit_columns_04.py \
+    src/cleanshelf/dropped_columns_05.py \
+    src/cleanshelf/brands_06.py \
+    src/cleanshelf/categories_07.py \
+    src/cleanshelf/columns_created_08.py \
+    src/cleanshelf/product_description_09.py \
+    src/cleanshelf/product_code_10.py \
+    src/cleanshelf/capitalized.py \
+    src/cleanshelf/final_excel.py
+
+all: run_scripts
+
+run_scripts:
+	@for script in $(SCRIPTS); do \
+	    echo "Running $$script"; \
+	    $(PYTHON) "$$script" || exit 1; \
+	done
+
+.PHONY: all run_scripts
