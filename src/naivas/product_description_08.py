@@ -1,0 +1,43 @@
+import pandas as pd
+import os
+
+# File paths
+input_file = r"artifacts\naivas\columns_created\columns_added_data.csv"
+output_folder = r"artifacts\naivas\product_description"
+output_file = os.path.join(output_folder, "updated_product_descriptions.csv")
+
+# Ensure output folder exists
+os.makedirs(output_folder, exist_ok=True)
+
+# Load data
+df = pd.read_csv(input_file)
+
+# Define the mapping of old product names to new names
+product_mapping = {
+    "MIKALLA LEAVE IN TREATMENT 1L": "MIKALLA LEAVE-IN TREATMENT 1L",
+    "MIKALLA LEAVE IN TREATMENT 500ML": "MIKALLA LEAVE-IN TREATMENT 500ML",
+    "MIKALLA LEAVE IN TREATMENT 250ML": "MIKALLA LEAVE-IN TREATMENT 250ML",
+    "MIKALLA LEAVE IN TREAT 100ML": "MIKALLA LEAVE-IN TREATMENT 100ML",
+    "MIKALLA HONEY&BUTTER COND 1L": "MIKALLA HONEY & BUTTER CONDITIONER 1L",
+    "MIKALLA HONEY&BUTTER COND 500M": "MIKALLA HONEY & BUTTER CONDITIONER 500ML",
+    "MIKALLA COND SHAMPOO 1L": "MIKALLA SHAMPOO 1L",
+    "MIKALLA COND SHAMPOO 500ML": "MIKALLA SHAMPOO 500ML",
+    "MIKALLA ANTI DANDRUFF CRM 150G": "MIKALLA ANTI-DANDRUFF CREAM 150G",
+    "MIKALLA ANTI DANDRUFF CRM 75G": "MIKALLA ANTI-DANDRUFF CREAM 75G",
+    "MIKALLA KIDS TEAR FREE SHAMPOO 240ML": "MIKALLA TEAR FREE KIDS SHAMPOO 250ML",
+    "MIKALLA KIDS DETANGLING COND 240ML": "MIKALLA DETANGLING CONDITIONER KIDS 240ML",
+    "MIKALLA KIDS LEAVE-IN TREATMENT 240ML": "MIKALLA LEAVE-IN TREATMENT KIDS 240ML",
+    "MIKALLA EDGE CONTROL GEL 250GM": "MIKALLA EDGE CONTROL GEL KIDS 250G",
+    "HONEY & BUTTER BERRY FUSION SCRUB 700G": "H&B BERRY FUSION SCRUB 700G",
+    "HONEY & BUTTER BERRY FUSION SCRUB 300G": "H&B BERRY FUSION SCRUB 700G",
+    "HONEY & BUTTER COFFEE & VANILLA SCRUB 700G": "H&B COFFEE VANILLA SCRUB 700G",
+    "HONEY & BUTTER COFFEE & VANILLA SCRUB 300G": "H&B COFFEE VANILLA SCRUB 300G"
+}
+
+# Apply the mapping to the 'DESCRIPTION' column
+df["DESCRIPTION"] = df["DESCRIPTION"].replace(product_mapping)
+
+# Save the updated DataFrame
+df.to_csv(output_file, index=False)
+
+print(f"Updated file saved at: {output_file}")
