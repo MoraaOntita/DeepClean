@@ -13,9 +13,9 @@ os.makedirs(output_folder, exist_ok=True)
 # Product codes mapping
 product_codes = {
     "FPADCCS": "Mikalla Anti-dandruff Shampoo",
-    "FPADHC150GM": "Mikalla Anti-dandruff Crème 150g",
-    "FPADHC275GM": "Mikalla Anti-dandruff Crème 275g",
-    "FPADHC75GM": "Mikalla Anti-dandruff Crème 75g",
+    "FPADHC150GM": "Mikalla Anti-dandruff Cream 150g",
+    "FPADHC275GM": "Mikalla Anti-dandruff Cream 275g",
+    "FPADHC75GM": "Mikalla Anti-dandruff Cream 75g",
     "FPALL155ML": "H&B Argan&Lavender Lotion 155ML",
     "FPALL280ML": "H&B Argan&Lavender Lotion 280ML",
     "FPALL420ML": "H&B Argan&Lavender Lotion 420ML",
