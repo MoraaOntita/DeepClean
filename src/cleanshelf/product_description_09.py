@@ -34,7 +34,7 @@ product_mapping = {
 
     "MIKALLA CLEANS&COND SHAMP 450ML": "Mikalla Shampoo 450ml",
 
-    "MIKALLA NOURISHING H/FOOD 75G": "Mikalla Nourishing Hair food 75g",
+    "MIKALLA NOURISHING H/FOOD 75G": "Mikalla Nourishing Hair Food 75g",
     
     "MIKALLA SCALP SOOTHER 150GM ": "Mikalla Scalp Soother Hairfood 150g",
     "MIKALLA SCALP SOOTHER 75GM ": "Mikalla Scalp Soother Hairfood 75g",
