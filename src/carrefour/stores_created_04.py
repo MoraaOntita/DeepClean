@@ -47,7 +47,9 @@ store_mapping = {
     "8142 - XKEH": "Runda",
     "8151 - XKEG": "GTC",
     "8156 - XKEQ": "Spring Valley",
-    "8148 - XKEI": "Rubis Makutano"
+    "8148 - XKEI": "Rubis Makutano",
+    "8144 - XKEL": "Rhaphta Promenade",
+
 }
 
 # Melt the DataFrame to move store columns under 'StoreNames'
