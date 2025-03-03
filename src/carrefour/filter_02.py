@@ -28,7 +28,7 @@ def log_function_call(func):
 @log_function_call
 def get_csv_file_path() -> str:
     """Get the full path of the CSV file."""
-    return os.path.join(CONFIG['paths']['formatted_folder'], 'CarrefourDataEncodingFree.csv')
+    return os.path.join(CONFIG['paths']['formatted_folder'], 'CarrefourJan2025.csv')
 
 
 @log_function_call

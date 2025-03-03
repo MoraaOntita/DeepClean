@@ -71,7 +71,7 @@ def clean_csv(csv_file_path: str, folder_path: str) -> None:
 def main():
     """Main function to execute the CSV cleaning pipeline."""
     try:
-        csv_file_path = get_csv_file_path(root_dir, "CarrefourDataEncodingFree.csv")
+        csv_file_path = get_csv_file_path(root_dir, "CarrefourJan2025.csv")
         formatted_folder_path = os.path.join(root_dir, CONFIG['paths']['formatted_folder'])
 
         # Create necessary folders

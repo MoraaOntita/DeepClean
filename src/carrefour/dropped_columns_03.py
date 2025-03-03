@@ -85,7 +85,7 @@ def main():
         # Drop the specified columns
         columns_to_drop = ['Year', 'Month', 'Dept', 'Dept Name', 'Section', 'Section Name', 'Family', 'Family name', 'Sub Family', 
                            'Sub Family Name', 'Brand No', 'Brand Principle', 'Brand Name', 'SupplierNo', 'Item Code', 'Item Bar Code',
-                           'Unnamed: 31', 'Unnamed: 32', 'Unnamed: 48', 'Unnamed: 49', 'MKT Code', 'MKT Name', 'SupplierName']
+                           'Unnamed: 31', 'Unnamed: 32', 'Unnamed: 49', 'Unnamed: 50', 'MKT Code', 'MKT Name', 'SupplierName']
         
 
         data_dropped = drop_columns(data, columns_to_drop)

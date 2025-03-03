@@ -17,13 +17,13 @@ df.rename(columns={"Item Name": "ProductDescriptions"}, inplace=True)
 
 # Calculate TotalSales
 # Avoid division by zero and handle missing values
-df["TotalSales"] = (df["Unnamed: 51"] / df["Unnamed: 50"]).fillna(0).replace([float("inf"), -float("inf")], 0) * df["Quantity"]
+df["TotalSales"] = (df["Unnamed: 52"] / df["Unnamed: 51"]).fillna(0).replace([float("inf"), -float("inf")], 0) * df["Quantity"]
 
 # Round the TotalSales column to 2 decimal places
 df["TotalSales"] = df["TotalSales"].round(2)
 
 # Drop the 'Unnamed: 51' and 'Unnamed: 50' columns
-df.drop(columns=["Unnamed: 51", "Unnamed: 50"], inplace=True)
+df.drop(columns=["Unnamed: 52", "Unnamed: 51"], inplace=True)
 
 # Create output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)

@@ -17,7 +17,8 @@ store_columns = [
     "3110 - KRIV", "3111 - KHUB", "3112 - KBBY", "3118 - KSOF", "3119 - KIRU", "3120 - KTRM",
     "3123 - KMGA", "3126 - KGLR", "3133 - KKI1", "8122 - KJCN", "8124 - KSRT", "8114 - KXGCM", "8115 - KXWGT",
     "8116 - KXNGN", "8117 - KXVYA", "8119 - KXKLM", "8121 - KXKEC", "8123 - KXCTH", "8128 - KXVLM", 
-    "8131 - KXNCM", "8139 - KXDIN", "8140 - XKEF", "8142 - XKEH", "8151 - XKEG", "8156 - XKEQ", "8148 - XKEI"
+    "8131 - KXNCM", "8139 - KXDIN", "8140 - XKEF", "8142 - XKEH", "8151 - XKEG", "8156 - XKEQ", "8148 - XKEI", 
+    "8144 - XKEL"
 ]
 
 # Define the store mapping dictionary
@@ -43,13 +44,13 @@ store_mapping = {
     "8128 - KXVLM": "Village Market",
     "8131 - KXNCM": "Mom Nyali Complex",
     "8139 - KXDIN": "Mom Diani",
+    "8144 - XKEL": "Rhaphta Promenade",
     "8140 - XKEF": "Mom Promenade",
     "8142 - XKEH": "Runda",
     "8151 - XKEG": "GTC",
     "8156 - XKEQ": "Spring Valley",
     "8148 - XKEI": "Rubis Makutano",
-    "8144 - XKEL": "Rhaphta Promenade",
-
+    
 }
 
 # Melt the DataFrame to move store columns under 'StoreNames'
