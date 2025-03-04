@@ -17,7 +17,7 @@ df = pd.read_csv(input_file, dtype=str)  # Force all columns to be strings
 df["Account_Name"] = "Naivas Supermarkets Ltd"
 df["Group"] = "mt"
 df["Sales_Rep"] = "leah"
-df["Date"] = "dec24"  # Keep it as a string without apostrophe
+df["Date"] = "Jan25"  # Keep it as a string without apostrophe
 df["Account_code"] = "NAI003"
 
 

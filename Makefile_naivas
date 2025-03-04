@@ -1,0 +1,28 @@
+# Set Python executable
+PYTHON := python
+
+# List of Python scripts for Naivas data
+SCRIPTS := \
+    src/naivas/format_change_01.py \
+    src/naivas/edit_columns_02.py \
+    src/naivas/dropped_rows_03.py \
+    src/naivas/dropped_columns_04.py \
+    src/naivas/brands_05.py \
+    src/naivas/categories_06.py \
+    src/naivas/columns_created_07.py \
+    src/naivas/product_description_08.py \
+    src/naivas/product_code_09.py \
+    src/naivas/capitalized_10.py
+
+# Default target to run all scripts
+all: run_scripts
+
+# Target to run the Naivas scripts in sequence
+run_scripts:
+	@for script in $(SCRIPTS); do \
+	    echo "Running $$script"; \
+	    $(PYTHON) "$$script" || exit 1; \
+	done
+
+# Declare phony targets
+.PHONY: all run_scripts

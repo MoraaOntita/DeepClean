@@ -11,6 +11,9 @@ os.makedirs(output_folder_path, exist_ok=True)
 # Load the Excel file with multi-level headers
 df = pd.read_excel(input_file_path, header=[0, 1])  # Read first two rows as headers
 
+# Remove the first 6 rows (the original row 1 will become row 8)
+df = df.iloc[6:].reset_index(drop=True)
+
 # Inspect the first few rows before cleaning column names
 print("Before cleaning column names:")
 print(df.head())
